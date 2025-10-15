@@ -13,7 +13,8 @@ const config: QuartzConfig = {
     enableSPA: true,
     enablePopovers: true,
     analytics: {
-      provider: "plausible",
+      provider: "google",
+      tagId: "G-6YMWXMG3KM",
     },
     locale: "en-US",
     baseUrl: "sunshinemoongit.github.io/log",
