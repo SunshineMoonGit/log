@@ -88,6 +88,44 @@ export async function fetchTtf(
     // ignore errors and fetch font
   }
 
+  // Handle Pretendard font from CDN
+  if (rawFontName === "Pretendard") {
+    const pretendardWeights: Record<number, string> = {
+      400: "Regular",
+      700: "Bold",
+    }
+    const weightName = pretendardWeights[weight as number]
+    if (weightName) {
+      // Try multiple possible paths
+      const possiblePaths = [
+        `https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/public/static/Pretendard-${weightName}.otf`,
+        `https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/packages/pretendard/dist/public/static/Pretendard-${weightName}.ttf`,
+        `https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/public/static/Pretendard-${weightName}.otf`,
+        `https://github.com/orioncactus/pretendard/raw/v1.3.9/packages/pretendard/dist/public/static/Pretendard-${weightName}.otf`,
+      ]
+
+      for (const pretendardUrl of possiblePaths) {
+        try {
+          const fontResponse = await fetch(pretendardUrl)
+          if (fontResponse.ok) {
+            const fontData = Buffer.from(await fontResponse.arrayBuffer())
+            await fs.mkdir(cacheDir, { recursive: true })
+            await fs.writeFile(cachePath, fontData)
+            return fontData
+          }
+        } catch (error) {
+          // Try next path
+          continue
+        }
+      }
+
+      console.log(
+        styleText("yellow", `\nWarning: Failed to fetch Pretendard font with weight ${weight} from all CDN paths`),
+      )
+      return
+    }
+  }
+
   // Get css file from google fonts
   const cssResponse = await fetch(
     `https://fonts.googleapis.com/css2?family=${fontName}:wght@${weight}`,
