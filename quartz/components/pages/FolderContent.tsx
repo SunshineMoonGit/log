@@ -124,11 +124,6 @@ export default ((opts?: Partial<FolderContentOptions>) => {
               {i18n(cfg.locale).pages.folderContent.itemsUnderFolder({
                 count: allPagesInFolder.length,
               })}
-              {options.limit && options.limit > 0 && displayPages.length < allPagesInFolder.length && (
-                <span>{i18n(cfg.locale).pages.folderContent.showingRecent({
-                  showing: displayPages.length,
-                })}</span>
-              )}
             </p>
           )}
           <div>
