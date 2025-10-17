@@ -73,6 +73,7 @@ export default {
     folderContent: {
       folder: "폴더",
       itemsUnderFolder: ({ count }) => `${count}건의 항목`,
+      showingRecent: ({ showing }) => ` (최근 ${showing}개 표시)`,
     },
     tagContent: {
       tag: "태그",

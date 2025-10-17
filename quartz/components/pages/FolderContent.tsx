@@ -17,11 +17,16 @@ interface FolderContentOptions {
   showFolderCount: boolean
   showSubfolders: boolean
   sort?: SortFn
+  /**
+   * Maximum number of items to display (0 = show all)
+   */
+  limit?: number
 }
 
 const defaultOptions: FolderContentOptions = {
   showFolderCount: true,
   showSubfolders: true,
+  limit: 5,
 }
 
 export default ((opts?: Partial<FolderContentOptions>) => {
@@ -88,12 +93,20 @@ export default ((opts?: Partial<FolderContentOptions>) => {
           }
         })
         .filter((page) => page !== undefined) ?? []
+
+    // Sort by modified date (most recent first) and limit if specified
+    const sortedPages = allPagesInFolder.sort((a, b) => {
+      return (b.dates?.modified?.getTime() ?? 0) - (a.dates?.modified?.getTime() ?? 0)
+    })
+    const displayPages = options.limit && options.limit > 0
+      ? sortedPages.slice(0, options.limit)
+      : sortedPages
     const cssClasses: string[] = fileData.frontmatter?.cssclasses ?? []
     const classes = cssClasses.join(" ")
     const listProps = {
       ...props,
       sort: options.sort,
-      allFiles: allPagesInFolder,
+      allFiles: displayPages,
     }
 
     const content = (
@@ -111,6 +124,11 @@ export default ((opts?: Partial<FolderContentOptions>) => {
               {i18n(cfg.locale).pages.folderContent.itemsUnderFolder({
                 count: allPagesInFolder.length,
               })}
+              {options.limit && options.limit > 0 && displayPages.length < allPagesInFolder.length && (
+                <span>{i18n(cfg.locale).pages.folderContent.showingRecent({
+                  showing: displayPages.length,
+                })}</span>
+              )}
             </p>
           )}
           <div>

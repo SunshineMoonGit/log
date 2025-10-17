@@ -19,6 +19,14 @@ export function getDate(cfg: GlobalConfiguration, data: QuartzPluginData): Date 
 }
 
 export function formatDate(d: Date, locale: ValidLocale = "en-US"): string {
+  // 한국어 locale의 경우 YYYY.MM.DD 형식 사용
+  if (locale === "ko-KR") {
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, "0")
+    const day = String(d.getDate()).padStart(2, "0")
+    return `${year}.${month}.${day}`
+  }
+
   return d.toLocaleDateString(locale, {
     year: "numeric",
     month: "short",

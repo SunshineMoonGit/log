@@ -24,6 +24,7 @@ export const defaultContentPageLayout: PageLayout = {
     Component.ArticleTitle(),
     Component.ContentMeta(),
     Component.TagList(),
+    Component.CategoryGrid(),  // 조건 제거해서 모든 페이지에서 테스트
   ],
   left: [
     Component.PageTitle(),
@@ -49,7 +50,7 @@ export const defaultContentPageLayout: PageLayout = {
 
 // components for pages that display lists of pages  (e.g. tags or folders)
 export const defaultListPageLayout: PageLayout = {
-  beforeBody: [Component.Breadcrumbs(), Component.ArticleTitle(), Component.ContentMeta()],
+  beforeBody: [Component.Breadcrumbs(), Component.ArticleTitle(), Component.ContentMeta(), Component.CategoryGrid()],
   left: [
     Component.PageTitle(),
     Component.MobileOnly(Component.Spacer()),
