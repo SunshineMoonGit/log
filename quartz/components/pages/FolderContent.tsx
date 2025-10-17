@@ -9,6 +9,9 @@ import { QuartzPluginData } from "../../plugins/vfile"
 import { ComponentChildren } from "preact"
 import { concatenateResources } from "../../util/resources"
 import { trieFromAllFiles } from "../../util/ctx"
+// @ts-ignore
+import script from "../scripts/pagination.inline"
+import paginationStyle from "../styles/pagination.scss"
 
 interface FolderContentOptions {
   /**
@@ -18,15 +21,15 @@ interface FolderContentOptions {
   showSubfolders: boolean
   sort?: SortFn
   /**
-   * Maximum number of items to display (0 = show all)
+   * Maximum number of items per page (0 = show all, no pagination)
    */
-  limit?: number
+  itemsPerPage?: number
 }
 
 const defaultOptions: FolderContentOptions = {
   showFolderCount: true,
   showSubfolders: true,
-  limit: 0,
+  itemsPerPage: 5,
 }
 
 export default ((opts?: Partial<FolderContentOptions>) => {
@@ -94,20 +97,21 @@ export default ((opts?: Partial<FolderContentOptions>) => {
         })
         .filter((page) => page !== undefined) ?? []
 
-    // Sort by modified date (most recent first) and limit if specified
+    // Sort by modified date (most recent first)
     const sortedPages = allPagesInFolder.sort((a, b) => {
       return (b.dates?.modified?.getTime() ?? 0) - (a.dates?.modified?.getTime() ?? 0)
     })
-    const displayPages = options.limit && options.limit > 0
-      ? sortedPages.slice(0, options.limit)
-      : sortedPages
+
     const cssClasses: string[] = fileData.frontmatter?.cssclasses ?? []
     const classes = cssClasses.join(" ")
     const listProps = {
       ...props,
       sort: options.sort,
-      allFiles: displayPages,
+      allFiles: sortedPages,
     }
+
+    const itemsPerPage = options.itemsPerPage ?? 0
+    const totalPages = itemsPerPage > 0 ? Math.ceil(sortedPages.length / itemsPerPage) : 1
 
     const content = (
       (tree as Root).children.length === 0
@@ -118,22 +122,36 @@ export default ((opts?: Partial<FolderContentOptions>) => {
     return (
       <div class="popover-hint">
         <article class={classes}>{content}</article>
-        <div class="page-listing">
-          {options.showFolderCount && (
-            <p>
-              {i18n(cfg.locale).pages.folderContent.itemsUnderFolder({
-                count: allPagesInFolder.length,
-              })}
-            </p>
-          )}
-          <div>
-            <PageList {...listProps} />
+        <div class="page-listing-wrapper" data-items-per-page={itemsPerPage} data-total-items={sortedPages.length}>
+          <div class="page-listing">
+            {options.showFolderCount && (
+              <p class="folder-count">
+                {i18n(cfg.locale).pages.folderContent.itemsUnderFolder({
+                  count: allPagesInFolder.length,
+                })}
+              </p>
+            )}
+            <div class="paginated-content">
+              <PageList {...listProps} />
+            </div>
           </div>
+          {itemsPerPage > 0 && totalPages > 1 && (
+            <nav class="pagination" data-total-pages={totalPages}>
+              <button class="pagination-btn pagination-prev" data-action="prev" disabled>
+                ← 이전
+              </button>
+              <div class="pagination-numbers"></div>
+              <button class="pagination-btn pagination-next" data-action="next">
+                다음 →
+              </button>
+            </nav>
+          )}
         </div>
       </div>
     )
   }
 
-  FolderContent.css = concatenateResources(style, PageList.css)
+  FolderContent.css = concatenateResources(style, PageList.css, paginationStyle)
+  FolderContent.afterDOMLoaded = script
   return FolderContent
 }) satisfies QuartzComponentConstructor

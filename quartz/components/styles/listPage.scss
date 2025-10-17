@@ -1,13 +1,35 @@
 @use "../../styles/variables.scss" as *;
 
+.page-listing {
+  padding: 1.5rem;
+  border: 1px solid var(--lightgray);
+  border-radius: 0.5rem;
+  background: var(--light);
+  margin-top: 2em;
+
+  .folder-count {
+    margin-top: 0;
+    margin-bottom: 1.5em;
+    font-size: 0.95em;
+    color: var(--gray);
+  }
+}
+
 ul.section-ul {
   list-style: none;
-  margin-top: 2em;
-  padding-left: 0;
+  margin-top: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
 }
 
 li.section-li {
   margin-bottom: 1em;
+
+  &:not(:last-child) {
+    padding-bottom: 1em;
+    border-bottom: 1px solid var(--lightgray);
+  }
 
   & > .section {
     display: grid;
@@ -36,5 +58,21 @@ li.section-li {
 
   & > .tags {
     display: none;
+  }
+}
+
+// 다크모드 지원
+.darkmode {
+  .page-listing {
+    background: var(--dark);
+    border-color: var(--darkgray);
+
+    .folder-count {
+      color: var(--lightgray);
+    }
+  }
+
+  li.section-li:not(:last-child) {
+    border-bottom-color: var(--darkgray);
   }
 }
