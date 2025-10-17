@@ -28,8 +28,10 @@ export default (() => {
         }
 
         // 하위 페이지인 경우: 현재 경로의 직계 하위 폴더만
-        return folderPath.startsWith(currentPath + "/") &&
-               folderPath.slice(currentPath.length + 1).split("/").length === 1
+        return (
+          folderPath.startsWith(currentPath + "/") &&
+          folderPath.slice(currentPath.length + 1).split("/").length === 1
+        )
       })
       .map((file) => {
         const frontmatter = file.frontmatter ?? {}
@@ -55,7 +57,10 @@ export default (() => {
             const isUrl = cat.icon.startsWith("http://") || cat.icon.startsWith("https://")
 
             return (
-              <a href={resolveRelative(fileData.slug!, cat.slug as any)} class="category-card">
+              <a
+                href={resolveRelative(fileData.slug!, (cat.slug + "/") as any)}
+                class="category-card"
+              >
                 <div class="category-icon">
                   {isUrl ? <img src={cat.icon} alt={cat.title} /> : cat.icon}
                 </div>
