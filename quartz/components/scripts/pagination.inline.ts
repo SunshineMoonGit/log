@@ -56,7 +56,7 @@ function setupPagination() {
       }
     }
 
-    function goToPage(page: number) {
+    function goToPage(page: number, shouldScroll: boolean = true) {
       if (page < 1 || page > totalPages) return
 
       currentPage = page
@@ -83,12 +83,14 @@ function setupPagination() {
       // 페이지 번호 다시 렌더링
       renderPageNumbers()
 
-      // 스크롤을 페이지 목록 상단으로
-      pageListing.scrollIntoView({ behavior: "smooth", block: "start" })
+      // 스크롤을 페이지 목록 상단으로 (초기 로드 시에는 스크롤 안 함)
+      if (shouldScroll) {
+        pageListing.scrollIntoView({ behavior: "smooth", block: "start" })
+      }
     }
 
-    // 초기 렌더링
-    goToPage(1)
+    // 초기 렌더링 (스크롤하지 않음)
+    goToPage(1, false)
 
     // 이벤트 리스너
     if (prevBtn) {
