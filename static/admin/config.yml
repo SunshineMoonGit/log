@@ -1,0 +1,177 @@
+backend:
+  name: github
+  repo: SunshineMoonGit/log
+  branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+
+media_folder: "static/images"
+public_folder: "/images"
+
+collections:
+  # React & Next
+  - name: "react-phase-1"
+    label: "React - Phase 1 (JS & TS)"
+    folder: "content/React & Next/Phase 1 - JavaScript & TypeScript"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "완료", name: "completed", widget: "boolean", default: false, required: false}
+
+  - name: "react-phase-2"
+    label: "React - Phase 2 (React Core)"
+    folder: "content/React & Next/Phase 2 - React Core"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "완료", name: "completed", widget: "boolean", default: false, required: false}
+
+  - name: "react-phase-3"
+    label: "React - Phase 3 (Next.js)"
+    folder: "content/React & Next/Phase 3 - Next.js"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "완료", name: "completed", widget: "boolean", default: false, required: false}
+
+  - name: "react-phase-4"
+    label: "React - Phase 4 (State & Data)"
+    folder: "content/React & Next/Phase 4 - State & Data Fetching"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "완료", name: "completed", widget: "boolean", default: false, required: false}
+
+  - name: "react-phase-5"
+    label: "React - Phase 5 (Performance)"
+    folder: "content/React & Next/Phase 5 - Performance"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "완료", name: "completed", widget: "boolean", default: false, required: false}
+
+  - name: "react-phase-6"
+    label: "React - Phase 6 (Architecture)"
+    folder: "content/React & Next/Phase 6 - Architecture & Design"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "완료", name: "completed", widget: "boolean", default: false, required: false}
+
+  # Flutter
+  - name: "flutter-phase-1"
+    label: "Flutter - Phase 1 (Dart)"
+    folder: "content/Flutter/Phase 1 - Dart"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "완료", name: "completed", widget: "boolean", default: false, required: false}
+
+  - name: "flutter-phase-2"
+    label: "Flutter - Phase 2 (Rendering & Widgets)"
+    folder: "content/Flutter/Phase 2 - Rendering & Widgets"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "완료", name: "completed", widget: "boolean", default: false, required: false}
+
+  - name: "flutter-phase-3"
+    label: "Flutter - Phase 3 (State & Architecture)"
+    folder: "content/Flutter/Phase 3 - State & Architecture"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "완료", name: "completed", widget: "boolean", default: false, required: false}
+
+  - name: "flutter-phase-4"
+    label: "Flutter - Phase 4 (Network & Data)"
+    folder: "content/Flutter/Phase 4 - Network & Data"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "완료", name: "completed", widget: "boolean", default: false, required: false}
+
+  - name: "flutter-phase-5"
+    label: "Flutter - Phase 5 (Performance & Testing)"
+    folder: "content/Flutter/Phase 5 - Performance & Testing"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "완료", name: "completed", widget: "boolean", default: false, required: false}
+
+  - name: "flutter-phase-6"
+    label: "Flutter - Phase 6 (Security & Platform)"
+    folder: "content/Flutter/Phase 6 - Security & Platform"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "완료", name: "completed", widget: "boolean", default: false, required: false}
+
+  - name: "flutter-phase-7"
+    label: "Flutter - Phase 7 (UI & Animation)"
+    folder: "content/Flutter/Phase 7 - UI & Animation"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "완료", name: "completed", widget: "boolean", default: false, required: false}
+
+  # Other categories
+  - name: "algorithm"
+    label: "Algorithm"
+    folder: "content/Algorithm"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "완료", name: "completed", widget: "boolean", default: false, required: false}
+
+  - name: "project"
+    label: "Project"
+    folder: "content/project"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}

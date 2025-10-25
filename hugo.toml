@@ -1,0 +1,41 @@
+baseURL = 'https://sunshinemoongit.github.io/log/'
+languageCode = 'ko-KR'
+title = '기쁘달'
+theme = 'PaperMod'
+
+enableRobotsTXT = true
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+enableEmoji = true
+
+[params]
+env = "production"
+description = "개발 학습 로그"
+author = "SunshineMoon"
+ShowReadingTime = true
+ShowShareButtons = false
+ShowPostNavLinks = true
+ShowBreadCrumbs = true
+ShowCodeCopyButtons = true
+ShowWordCount = true
+ShowRssButtonInSectionTermList = true
+UseHugoToc = true
+
+[params.homeInfoParams]
+Title = "기쁘달"
+Content = "개발자 학습 노트"
+
+[[params.socialIcons]]
+name = "github"
+url = "https://github.com/SunshineMoonGit"
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+
+[markup.goldmark.renderer]
+unsafe = true
+
+[markup.highlight]
+style = 'github-dark'
+lineNos = false
