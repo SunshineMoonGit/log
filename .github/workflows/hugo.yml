@@ -42,12 +42,6 @@ jobs:
           token: ${{ secrets.VAULT_ACCESS_TOKEN }}
           path: content
 
-      - name: Checkout PaperMod theme
-        uses: actions/checkout@v4
-        with:
-          repository: adityatelange/hugo-PaperMod
-          path: themes/PaperMod
-
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
