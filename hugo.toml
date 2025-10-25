@@ -1,7 +1,7 @@
 baseURL = 'https://sunshinemoongit.github.io/log/'
 languageCode = 'ko-KR'
 title = '기쁘달'
-theme = 'PaperMod'
+theme = 'custom'
 
 enableRobotsTXT = true
 buildDrafts = false
