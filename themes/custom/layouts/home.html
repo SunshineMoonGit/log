@@ -230,27 +230,24 @@
         <h2 class="section-title">카테고리</h2>
     </div>
     <div class="category-grid">
-        {{ $categories := slice
-            (dict "name" "React & Next" "icon" "⚛️" "path" "/react-next/")
-            (dict "name" "Flutter" "icon" "📱" "path" "/flutter/")
-            (dict "name" "Algorithm" "icon" "🧮" "path" "/algorithm/")
-            (dict "name" "AI" "icon" "🤖" "path" "/ai/")
-            (dict "name" "Kotlin" "icon" "🎯" "path" "/kotlin/")
-            (dict "name" "Glossary" "icon" "📚" "path" "/glossary/")
-        }}
-        {{ range $categories }}
-        <a href="{{ .path }}" class="category-card">
-            <div class="category-icon">{{ .icon }}</div>
-            <div class="category-name">{{ .name }}</div>
-            <div class="category-count">
-                {{ $section := $.Site.GetPage .path }}
-                {{ if $section }}
-                    {{ len $section.Pages }}개의 글
+        {{ range .Site.Sections }}
+        {{ if ne .Section "project" }}
+        <a href="{{ .RelPermalink }}" class="category-card">
+            <div class="category-icon">
+                {{ if .Params.icon }}
+                    {{ if hasPrefix .Params.icon "http" }}
+                        <img src="{{ .Params.icon }}" alt="{{ .Title }}" style="width: 48px; height: 48px; object-fit: contain;">
+                    {{ else }}
+                        {{ .Params.icon }}
+                    {{ end }}
                 {{ else }}
-                    0개의 글
+                    📁
                 {{ end }}
             </div>
+            <div class="category-name">{{ .Title }}</div>
+            <div class="category-count">{{ len .Pages }}개의 글</div>
         </a>
+        {{ end }}
         {{ end }}
     </div>
 </section>
