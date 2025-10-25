@@ -39,3 +39,7 @@ unsafe = true
 [markup.highlight]
 style = 'github-dark'
 lineNos = false
+
+[minify]
+  disableHTML = true
+  minifyOutput = false
