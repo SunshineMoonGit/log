@@ -1,255 +1,272 @@
 {{ define "main" }}
 <style>
-    /* Hero Section */
-    .hero {
-        text-align: center;
-        padding: 60px 0;
-        margin-bottom: 60px;
-    }
+  /* Hero Section */
+  .hero {
+    text-align: center;
+    padding: 60px 0;
+    margin-bottom: 60px;
+  }
 
-    .hero h1 {
-        font-size: 48px;
-        font-weight: 700;
-        margin-bottom: 16px;
-    }
+  .hero h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
 
-    .hero p {
-        font-size: 20px;
-        color: var(--text-secondary);
-    }
+  .hero p {
+    font-size: 20px;
+    color: var(--text-secondary);
+  }
 
-    /* Section */
-    .section {
-        margin-bottom: 80px;
-    }
+  /* Section */
+  .section {
+    margin-bottom: 80px;
+  }
 
-    .section-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 32px;
-    }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
 
-    .section-title {
-        font-size: 32px;
-        font-weight: 700;
-    }
+  .section-title {
+    font-size: 32px;
+    font-weight: 700;
+  }
 
-    .section-link {
-        color: var(--accent);
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s;
-    }
+  .section-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
 
-    .section-link:hover {
-        color: var(--accent-hover);
-    }
+  .section-link:hover {
+    color: var(--accent-hover);
+  }
 
-    /* Category Grid */
-    .category-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 24px;
-    }
+  /* Category Grid */
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
 
-    .category-card {
-        padding: 32px;
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        background: var(--bg-secondary);
-        text-decoration: none;
-        color: var(--text-primary);
-        transition: all 0.3s;
-        cursor: pointer;
-    }
+  .category-card {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    text-align: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--bg-secondary);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.3s;
+    cursor: pointer;
+    /* min-height: 160px; */
+  }
 
-    .category-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px var(--shadow);
-        border-color: var(--accent);
-    }
+  .category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px var(--shadow);
+    border-color: var(--accent);
+  }
 
-    .category-icon {
-        font-size: 40px;
-        margin-bottom: 16px;
-    }
+  .category-icon {
+    font-size: 30px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+  }
 
-    .category-name {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 8px;
-    }
+  .category-icon img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+  }
 
-    .category-count {
-        color: var(--text-secondary);
-        font-size: 14px;
-    }
+  .category-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+  }
 
-    /* Project Cards */
-    .project-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 32px;
-    }
+  .category-name {
+    font-size: 18px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
 
-    .project-card {
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        overflow: hidden;
-        background: var(--bg-secondary);
-        text-decoration: none;
-        color: var(--text-primary);
-        transition: all 0.3s;
-    }
+  .category-count {
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
 
-    .project-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px var(--shadow);
-    }
+  /* Project Cards */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 32px;
+  }
 
-    .project-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-    }
+  .project-card {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--bg-secondary);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.3s;
+  }
 
-    .project-content {
-        padding: 24px;
-    }
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px var(--shadow);
+  }
 
-    .project-title {
-        font-size: 24px;
-        font-weight: 700;
-        margin-bottom: 8px;
-    }
+  .project-image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+    background-size: cover;
+    background-position: center;
+  }
 
-    .project-subtitle {
-        color: var(--text-secondary);
-        font-size: 14px;
-        margin-bottom: 16px;
-    }
+  .project-content {
+    padding: 24px;
+  }
 
-    .project-desc {
-        color: var(--text-secondary);
-        line-height: 1.6;
-        margin-bottom: 16px;
-    }
+  .project-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
 
-    .project-meta {
-        font-size: 13px;
-        color: var(--text-secondary);
-    }
+  .project-subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
 
-    /* Recent Posts */
-    .post-list {
-        display: grid;
-        gap: 24px;
-    }
+  .project-desc {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
 
-    .post-item {
-        padding: 24px;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        background: var(--bg-secondary);
-        text-decoration: none;
-        color: var(--text-primary);
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 16px;
-        align-items: center;
-        transition: all 0.3s;
-    }
+  .project-meta {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
 
-    .post-item:hover {
-        border-color: var(--accent);
-        transform: translateX(4px);
-    }
+  /* Recent Posts */
+  .post-list {
+    display: grid;
+    gap: 24px;
+  }
 
-    .post-info h3 {
-        font-size: 20px;
-        font-weight: 600;
-        margin-bottom: 8px;
-    }
+  .post-item {
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-secondary);
+    text-decoration: none;
+    color: var(--text-primary);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+    transition: all 0.3s;
+  }
 
-    .post-meta {
-        display: flex;
-        gap: 16px;
-        font-size: 14px;
-        color: var(--text-secondary);
-    }
+  .post-item:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+  }
 
-    .post-date {
-        color: var(--text-secondary);
-        font-size: 14px;
-    }
+  .post-info h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .post-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .post-date {
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
 </style>
 
 <!-- Hero -->
 <div class="hero">
-    <h1>{{ .Site.Title }}</h1>
-    <p>{{ .Site.Params.description }}</p>
+  <h1>{{ .Site.Title }}</h1>
+  <p>{{ .Site.Params.description }}</p>
 </div>
 
 <!-- Projects Section -->
 {{ with .Site.GetPage "project" }}
 <section class="section">
-    <div class="section-header">
-        <h2 class="section-title">프로젝트</h2>
-    </div>
-    <div class="project-grid">
-        {{ range .Pages }}
-        <a href="{{ .RelPermalink }}" class="project-card">
-            {{ with .Params.image }}
-            <img src="{{ . }}" alt="{{ $.Title }}" class="project-image">
-            {{ else }}
-            <div class="project-image"></div>
-            {{ end }}
-            <div class="project-content">
-                <h3 class="project-title">{{ .Title }}</h3>
-                {{ with .Params.subtitle }}
-                <p class="project-subtitle">{{ . }}</p>
-                {{ end }}
-                {{ with .Params.description }}
-                <p class="project-desc">{{ . }}</p>
-                {{ end }}
-                {{ with .Params.period }}
-                <p class="project-meta"><strong>기간:</strong> {{ . }}</p>
-                {{ end }}
-            </div>
-        </a>
+  <div class="section-header">
+    <h2 class="section-title">프로젝트</h2>
+  </div>
+  <div class="project-grid">
+    {{ range (sort .Pages "Params.period" "desc") }}
+    <a href="{{ .RelPermalink }}" class="project-card">
+      {{ with .Params.image }}
+      <img src="{{ . }}" alt="{{ $.Title }}" class="project-image" />
+      {{ else }}
+      <div class="project-image"></div>
+      {{ end }}
+      <div class="project-content">
+        <h3 class="project-title">{{ .Title }}</h3>
+        {{ with .Params.subtitle }}
+        <p class="project-subtitle">{{ . }}</p>
         {{ end }}
-    </div>
+      </div>
+    </a>
+    {{ end }}
+  </div>
 </section>
 {{ end }}
 
 <!-- Categories Section -->
 <section class="section">
-    <div class="section-header">
-        <h2 class="section-title">카테고리</h2>
-    </div>
-    <div class="category-grid">
-        {{ range .Site.Sections }}
-        {{ if ne .Section "project" }}
-        <a href="{{ .RelPermalink }}" class="category-card">
-            <div class="category-icon">
-                {{ if .Params.icon }}
-                    {{ if hasPrefix .Params.icon "http" }}
-                        <img src="{{ .Params.icon }}" alt="{{ .Title }}" style="width: 48px; height: 48px; object-fit: contain;">
-                    {{ else }}
-                        {{ .Params.icon }}
-                    {{ end }}
-                {{ else }}
-                    📁
-                {{ end }}
-            </div>
-            <div class="category-name">{{ .Title }}</div>
-            <div class="category-count">{{ len .Pages }}개의 글</div>
-        </a>
-        {{ end }}
-        {{ end }}
-    </div>
+  <div class="section-header">
+    <h2 class="section-title">카테고리</h2>
+  </div>
+  <div class="category-grid">
+    {{ range .Site.Sections }} {{ if ne .Section "project" }}
+    <a href="{{ .RelPermalink }}" class="category-card">
+      <div class="category-icon">
+        {{ if .Params.icon }} {{ if hasPrefix .Params.icon "http" }}
+        <img src="{{ .Params.icon }}" alt="{{ .Title }}" />
+        {{ else }} {{ .Params.icon }} {{ end }} {{ else }} 📁 {{ end }}
+      </div>
+      <div class="category-body">
+        <div class="category-name">{{ .Title }}</div>
+      </div>
+    </a>
+    {{ end }} {{ end }}
+  </div>
 </section>
 
 {{ end }}

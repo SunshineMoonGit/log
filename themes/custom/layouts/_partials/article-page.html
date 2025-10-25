@@ -1,0 +1,595 @@
+<style>
+  .article-container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 24px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .article-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(99, 102, 241, 0.12);
+    z-index: 150;
+    pointer-events: none;
+  }
+
+  .article-progress-bar {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #6366f1, #0ea5e9);
+    transition: width 0.15s ease-out, opacity 0.2s ease;
+    opacity: 0;
+  }
+
+  .article-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .article-breadcrumb a {
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  .article-breadcrumb a:hover {
+    color: var(--accent);
+  }
+
+  .article-breadcrumb span.separator {
+    opacity: 0.5;
+  }
+
+  .article-hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 40px 48px;
+    border-radius: 24px;
+    color: #0f172a;
+    overflow: hidden;
+    background: radial-gradient(120% 160% at 0% 0%, rgba(99, 102, 241, 0.22), transparent),
+      radial-gradient(120% 160% at 100% 0%, rgba(14, 165, 233, 0.2), transparent),
+      var(--bg-secondary);
+    border: 1px solid rgba(99, 102, 241, 0.16);
+    box-shadow: 0 30px 60px rgba(15, 23, 42, 0.18);
+  }
+
+  .article-hero h1 {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 800;
+    margin: 0;
+    line-height: 1.15;
+    color: var(--text-primary);
+  }
+
+  .article-description {
+    color: var(--text-secondary);
+    font-size: 18px;
+    line-height: 1.7;
+    margin: 0;
+    max-width: 72ch;
+  }
+
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .article-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.06);
+    color: var(--text-secondary);
+  }
+
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: -8px;
+  }
+
+  .article-tag {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(99, 102, 241, 0.14);
+    color: var(--accent);
+    font-size: 13px;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  .article-tag:hover {
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .article-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+
+  @media (min-width: 1100px) {
+    .article-layout {
+      grid-template-columns: minmax(0, 3fr) minmax(260px, 1fr);
+      align-items: flex-start;
+    }
+
+    .article-toc {
+      position: sticky;
+      top: 128px;
+      align-self: start;
+    }
+  }
+
+  .article-body {
+    line-height: 1.78;
+    font-size: 17px;
+    background: rgba(15, 23, 42, 0.02);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 24px;
+    padding: 40px 48px;
+    box-shadow: 0 22px 45px rgba(15, 23, 42, 0.12);
+    backdrop-filter: blur(6px);
+  }
+
+  .article-body h2 {
+    position: relative;
+    font-size: 30px;
+    font-weight: 700;
+    margin-top: 52px;
+    margin-bottom: 24px;
+    padding-top: 12px;
+    scroll-margin-top: 120px;
+  }
+
+  .article-body h2::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 64px;
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #6366f1, #0ea5e9);
+  }
+
+  .article-body h3 {
+    position: relative;
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 40px;
+    margin-bottom: 18px;
+    padding-left: 14px;
+    scroll-margin-top: 120px;
+  }
+
+  .article-body h3::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    border-radius: 999px;
+    background: rgba(99, 102, 241, 0.5);
+  }
+
+  .article-body h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 28px;
+    margin-bottom: 12px;
+    scroll-margin-top: 120px;
+  }
+
+  .article-body blockquote {
+    margin: 32px 0;
+    padding: 20px 28px;
+    border-left: 4px solid rgba(99, 102, 241, 0.6);
+    background: rgba(99, 102, 241, 0.12);
+    color: var(--text-secondary);
+    border-radius: 16px;
+  }
+
+  .article-body code {
+    background: rgba(15, 23, 42, 0.08);
+    padding: 2px 6px;
+    border-radius: 6px;
+  }
+
+  .article-body pre {
+    position: relative;
+    padding: 24px 28px 26px;
+    border-radius: 14px;
+    background: #0b1120;
+    color: #e2e8f0;
+    overflow-x: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    box-shadow: 0 26px 46px rgba(15, 23, 42, 0.5);
+    margin: 32px 0;
+    word-break: break-word;
+  }
+
+  .article-body pre::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(226, 232, 240, 0.55);
+  }
+
+  .article-body pre::after {
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    width: 42px;
+    height: 10px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 10% 40%, rgba(248, 113, 113, 0.95) 0, transparent 55%),
+      radial-gradient(circle at 40% 30%, rgba(245, 158, 11, 0.9) 0, transparent 55%),
+      radial-gradient(circle at 70% 30%, rgba(74, 222, 128, 0.9) 0, transparent 55%);
+    opacity: 0.6;
+  }
+
+  .article-body pre code {
+    background: transparent;
+    padding: 0;
+    color: inherit;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    display: block;
+  }
+
+  .article-body pre code span {
+    white-space: inherit !important;
+  }
+
+  .article-body ul,
+  .article-body ol {
+    margin: 20px 0;
+    padding-left: 0;
+    display: grid;
+    gap: 12px;
+    list-style: none;
+  }
+
+  .article-body ul li,
+  .article-body ol li {
+    position: relative;
+    padding-left: 28px;
+    margin: 0;
+  }
+
+  .article-body ul li::before {
+    content: "";
+    position: absolute;
+    top: 12px;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #0ea5e9);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.16);
+  }
+
+  .article-body ol {
+    counter-reset: section-counter;
+  }
+
+  .article-body ol li {
+    counter-increment: section-counter;
+  }
+
+  .article-body ol li::before {
+    content: counter(section-counter);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.18);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(4px);
+  }
+
+  .article-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 32px 0;
+    font-size: 15px;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1);
+  }
+
+  .article-body th,
+  .article-body td {
+    padding: 14px 18px;
+    text-align: left;
+  }
+
+  .article-body thead {
+    background: rgba(99, 102, 241, 0.16);
+    color: var(--text-primary);
+  }
+
+  .article-body tbody tr:nth-child(odd) {
+    background: rgba(148, 163, 184, 0.06);
+  }
+
+  .article-body a {
+    color: var(--accent);
+    font-weight: 600;
+    transition: color 0.2s ease;
+  }
+
+  .article-body a.wiki-link {
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent);
+  }
+
+  .article-body a:hover {
+    color: var(--accent-hover);
+  }
+
+  .article-body a.wiki-link:hover {
+    border-bottom-color: var(--accent-hover);
+  }
+
+  .article-body hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.6), transparent);
+    margin: 48px 0;
+  }
+
+  .article-body img {
+    max-width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+    margin: 36px auto;
+    display: block;
+  }
+
+  .article-body figure {
+    margin: 32px 0;
+    text-align: center;
+  }
+
+  .article-body figcaption {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .article-toc {
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--bg-secondary);
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+  }
+
+  .article-toc h2 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+
+  .article-toc nav ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: grid;
+    gap: 8px;
+  }
+
+  .article-toc nav li {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .article-toc nav a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .article-toc nav a:hover {
+    color: var(--accent);
+  }
+
+  :root[data-theme="dark"] .article-hero {
+    color: #e2e8f0;
+    background: radial-gradient(140% 200% at 0% 0%, rgba(99, 102, 241, 0.28), transparent),
+      radial-gradient(120% 180% at 100% 10%, rgba(14, 165, 233, 0.26), transparent),
+      rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    box-shadow: 0 30px 60px rgba(6, 12, 24, 0.55);
+  }
+
+  :root[data-theme="dark"] .article-meta span {
+    background: rgba(148, 163, 184, 0.16);
+    color: rgba(226, 232, 240, 0.9);
+  }
+
+  :root[data-theme="dark"] .article-body {
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    box-shadow: 0 22px 45px rgba(6, 12, 24, 0.65);
+  }
+
+  :root[data-theme="dark"] .article-tag {
+    background: rgba(99, 102, 241, 0.3);
+    color: rgba(226, 232, 240, 0.96);
+  }
+
+  :root[data-theme="dark"] .article-progress {
+    background: rgba(148, 163, 184, 0.22);
+  }
+
+  :root[data-theme="dark"] .article-body blockquote {
+    background: rgba(99, 102, 241, 0.22);
+    border-left-color: rgba(99, 102, 241, 0.6);
+  }
+
+  :root[data-theme="dark"] .article-body table {
+    border-color: rgba(148, 163, 184, 0.32);
+    box-shadow: 0 16px 36px rgba(6, 12, 24, 0.55);
+  }
+
+  :root[data-theme="dark"] .article-body tbody tr:nth-child(odd) {
+    background: rgba(148, 163, 184, 0.12);
+  }
+
+  :root[data-theme="dark"] .article-body pre {
+    background: rgba(15, 23, 42, 0.95);
+    border-color: rgba(148, 163, 184, 0.32);
+    box-shadow: 0 22px 40px rgba(6, 12, 24, 0.75);
+  }
+
+  @media (max-width: 768px) {
+    .article-container {
+      padding: 24px 20px 80px;
+      gap: 24px;
+    }
+
+    .article-hero {
+      padding: 28px 24px;
+      border-radius: 18px;
+    }
+
+    .article-body {
+      padding: 28px 22px;
+      border-radius: 18px;
+    }
+
+    .article-body ul li,
+    .article-body ol li {
+      padding-left: 22px;
+    }
+
+    .article-body ul li::before,
+    .article-body ol li::before {
+      transform: translateY(2px);
+    }
+  }
+</style>
+
+<div class="article-container">
+  <div class="article-progress">
+    <span class="article-progress-bar"></span>
+  </div>
+  <nav class="article-breadcrumb">
+    <a href="{{ relLangURL "/" }}">홈</a>
+    {{ with .CurrentSection }}
+      <span class="separator">/</span>
+      <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+    {{ end }}
+    {{ with .Parent }}
+      <span class="separator">/</span>
+      <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+    {{ end }}
+    <span class="separator">/</span>
+    <span>{{ .Title }}</span>
+  </nav>
+
+  {{ $description := or .Params.description (plainify .Summary) }}
+  <header class="article-hero">
+    <h1>{{ .Title }}</h1>
+    {{ with $description }}
+      <p class="article-description">{{ . }}</p>
+    {{ end }}
+    <div class="article-meta">
+      {{ with .PublishDate }}
+        <span>📅 {{ .Format "2006.01.02" }}</span>
+      {{ else }}
+        {{ with .Date }}
+          <span>📅 {{ .Format "2006.01.02" }}</span>
+        {{ end }}
+      {{ end }}
+      {{ with .Lastmod }}
+        <span>🛠 업데이트 {{ .Format "2006.01.02" }}</span>
+      {{ end }}
+      {{ if gt .ReadingTime 0 }}
+        <span>⏱ 약 {{ .ReadingTime }}분 소요</span>
+      {{ end }}
+      {{ if gt .WordCount 0 }}
+        <span>📝 {{ .WordCount }} 단어</span>
+      {{ end }}
+    </div>
+    {{ with .GetTerms "tags" }}
+      <div class="article-tags">
+        {{ range . }}
+          <a class="article-tag" href="{{ .RelPermalink }}">#{{ .LinkTitle }}</a>
+        {{ end }}
+      </div>
+    {{ end }}
+  </header>
+
+  <div class="article-layout">
+    <article class="article-body">
+      {{ $content := .Content }}
+      {{ $content = replaceRE "<pre><code class=\"language-([^\"]+)\"" "<pre data-lang=\"$1\"><code class=\"language-$1\"" $content }}
+      {{ $content = replaceRE "<pre><code>" "<pre data-lang=\"text\"><code>" $content }}
+      {{ partial "wikilinks.html" (dict "page" . "content" $content) }}
+    </article>
+    {{ with .TableOfContents }}
+      <aside class="article-toc">
+        <h2>목차</h2>
+        <nav>
+          {{ . }}
+        </nav>
+      </aside>
+    {{ end }}
+  </div>
+</div>
+<script>
+  const progressBar = document.querySelector(".article-progress-bar");
+  const docEl = document.documentElement;
+
+  if (progressBar) {
+    const updateProgress = () => {
+      const scrollTop = docEl.scrollTop || window.pageYOffset;
+      const scrollHeight = docEl.scrollHeight - docEl.clientHeight;
+      const progress = scrollHeight > 0 ? Math.min(Math.max(scrollTop / scrollHeight, 0), 1) : 0;
+      progressBar.style.width = `${progress * 100}%`;
+      progressBar.style.opacity = progress > 0.02 ? 1 : 0;
+    };
+
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("load", updateProgress);
+    window.addEventListener("resize", updateProgress);
+  }
+</script>

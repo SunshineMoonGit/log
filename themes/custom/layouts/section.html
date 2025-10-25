@@ -1,10 +1,243 @@
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
-  {{ .Content }}
-  {{ range .Pages }}
-    <section>
-      <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-      {{ .Summary }}
-    </section>
+<style>
+  .section-hero {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .section-hero-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    font-size: 36px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .section-hero-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .section-hero h1 {
+    font-size: 40px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .section-hero-description {
+    color: var(--text-secondary);
+    margin-top: -10px;
+  }
+
+  .section-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .section-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--bg-secondary);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    min-height: 180px;
+  }
+
+  .section-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px var(--shadow);
+    border-color: var(--accent);
+  }
+
+  .section-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    background: rgba(0, 0, 0, 0.04);
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .section-card-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .section-card-title {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .section-card-meta {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .section-card-desc {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+    flex-grow: 1;
+  }
+
+  .section-content {
+    line-height: 1.7;
+  }
+
+  .section-content :is(h2, h3, h4) {
+    margin-top: 32px;
+  }
+
+  .section-content h2 {
+    font-size: 28px;
+    font-weight: 700;
+    padding: 20px 24px;
+    border-radius: 16px;
+    background: linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.08),
+      rgba(14, 116, 144, 0.08)
+    );
+    border: 1px solid rgba(99, 102, 241, 0.18);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  }
+
+  .section-content h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding-left: 16px;
+    border-left: 4px solid var(--accent);
+  }
+
+  .section-content ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 16px 0 28px;
+    display: grid;
+    gap: 12px;
+  }
+
+  .section-content li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-secondary);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+  }
+
+  .section-content li input[type="checkbox"] {
+    margin-top: 4px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent);
+  }
+
+  .section-content li p {
+    margin: 0;
+    color: var(--text-secondary);
+  }
+
+  .section-content a {
+    color: var(--accent);
+    font-weight: 600;
+  }
+</style>
+
+<div class="section-hero">
+  {{ with .Params.icon }}
+  <div class="section-hero-icon">
+    {{ if hasPrefix . "http" }}
+    <img src="{{ . }}" alt="{{ $.Title }}" />
+    {{ else }} {{ . }} {{ end }}
+  </div>
   {{ end }}
-{{ end }}
+  <div>
+    <h1 class="section-hero-title">{{ .Title }}</h1>
+    {{ with .Params.description }}
+    <p class="section-hero-description">{{ . }}</p>
+    {{ end }}
+  </div>
+</div>
+
+{{ $sections := .Sections }} {{ $pages := .RegularPages }} {{ $page := . }} {{
+$directPages := where (where $pages "Section" .Section) "Parent" "eq" . }} {{
+$childSectionPages := where $pages "Parent" "ne" . }} {{ if or (gt (len
+$sections) 0) (gt (len $directPages) 0) }}
+<div class="section-grid">
+  {{ range $sections }}
+  <a class="section-card" href="{{ .RelPermalink }}">
+    <div class="section-card-icon">
+      {{ with .Params.icon }} {{ if hasPrefix . "http" }}
+      <img src="{{ . }}" alt="{{ $.Title }}" />
+      {{ else }} {{ . }} {{ end }} {{ else }} 📁 {{ end }}
+    </div>
+    <div class="section-card-title">{{ .Title }}</div>
+    {{ with .Params.description }}
+    <div class="section-card-desc">{{ . }}</div>
+    {{ end }}
+    <div class="section-card-meta">
+      {{ len .RegularPagesRecursive }}개의 문서
+    </div>
+  </a>
+  {{ end }} {{ range $directPages }}
+  <a class="section-card" href="{{ .RelPermalink }}">
+    <div class="section-card-icon">📄</div>
+    <div class="section-card-title">{{ .Title }}</div>
+    {{ with .Params.description }}
+    <div class="section-card-desc">{{ . }}</div>
+    {{ else }} {{ with .Summary }}
+    <div class="section-card-desc">{{ . }}</div>
+    {{ end }} {{ end }} {{ with .Date }}
+    <div class="section-card-meta">{{ .Format "2006.01.02" }}</div>
+    {{ end }}
+  </a>
+  {{ end }}
+</div>
+{{ end }} {{ with .Content }}
+<article class="section-content">
+  {{ partial "wikilinks.html" (dict "page" $page "content" .) }}
+</article>
+{{ end }} {{ if gt (len $childSectionPages) 0 }}
+<div class="section-grid">
+  {{ range $childSectionPages }}
+  <a class="section-card" href="{{ .RelPermalink }}">
+    <div class="section-card-icon">📄</div>
+    <div class="section-card-title">{{ .Title }}</div>
+    {{ with .Params.description }}
+    <div class="section-card-desc">{{ . }}</div>
+    {{ else }} {{ with .Summary }}
+    <div class="section-card-desc">{{ . }}</div>
+    {{ end }} {{ end }} {{ with .Date }}
+    <div class="section-card-meta">{{ .Format "2006.01.02" }}</div>
+    {{ end }}
+  </a>
+  {{ end }}
+</div>
+{{ end }} {{ end }}

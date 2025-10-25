@@ -1,186 +1,251 @@
 <!DOCTYPE html>
 <html lang="{{ .Site.Language.Lang }}" data-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
-    <meta name="description" content="{{ .Site.Params.description }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title
+      }}{{ end }}
+    </title>
+    <meta name="description" content="{{ .Site.Params.description }}" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
-        :root[data-theme="light"] {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f9fa;
-            --text-primary: #1a1a1a;
-            --text-secondary: #666666;
-            --border: #e1e4e8;
-            --accent: #0066cc;
-            --accent-hover: #0052a3;
-            --shadow: rgba(0, 0, 0, 0.1);
-        }
+      :root[data-theme="light"] {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8f9fa;
+        --text-primary: #1a1a1a;
+        --text-secondary: #666666;
+        --border: #e1e4e8;
+        --accent: #0066cc;
+        --accent-hover: #0052a3;
+        --shadow: rgba(0, 0, 0, 0.1);
+      }
 
-        :root[data-theme="dark"] {
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #2d2d2d;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --border: #404040;
-            --accent: #3b82f6;
-            --accent-hover: #60a5fa;
-            --shadow: rgba(255, 255, 255, 0.1);
-        }
+      html[data-scroll-behavior="smooth"] {
+        scroll-behavior: smooth;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      :root[data-theme="dark"] {
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0a0;
+        --border: #404040;
+        --accent: #3b82f6;
+        --accent-hover: #60a5fa;
+        --shadow: rgba(255, 255, 255, 0.1);
+      }
 
-        body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            transition: background 0.3s, color 0.3s;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+      body {
+        font-family: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.6;
+        transition: background 0.3s, color 0.3s;
+      }
 
-        header {
-            padding: 24px 0;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            background: var(--bg-primary);
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+      .site-header {
+        padding: 24px 0;
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        background: var(--bg-primary);
+        z-index: 100;
+        backdrop-filter: blur(10px);
+      }
 
-        .site-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-primary);
-            text-decoration: none;
-        }
+      .site-header .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-        .header-actions {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-        }
+      .site-header .site-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--text-primary);
+        text-decoration: none;
+      }
 
-        .theme-toggle {
-            background: none;
-            border: 1px solid var(--border);
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            color: var(--text-primary);
-            font-size: 18px;
-            transition: all 0.3s;
-        }
+      .site-header .header-actions {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
 
-        .theme-toggle:hover {
-            background: var(--bg-secondary);
-        }
+      .site-header .theme-toggle {
+        background: none;
+        border: 1px solid var(--border);
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        color: var(--text-primary);
+        font-size: 18px;
+        transition: all 0.3s;
+      }
 
-        .search-input {
-            padding: 8px 16px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            font-size: 14px;
-            width: 200px;
-            transition: width 0.3s;
-        }
+      .site-header .theme-toggle:hover {
+        background: var(--bg-secondary);
+      }
 
-        .search-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            width: 300px;
-        }
+      .site-header .search-input {
+        padding: 8px 16px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        font-size: 14px;
+        width: 200px;
+        transition: width 0.3s;
+      }
 
-        main {
-            min-height: 70vh;
-            padding: 40px 0;
-        }
+      .site-header .search-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        width: 300px;
+      }
 
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 24px 0;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
+      .post {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .post-header {
+        margin-bottom: 32px;
+      }
+
+      .post-body img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 16px;
+        display: block;
+        margin: 32px auto;
+        box-shadow: 0 20px 40px var(--shadow);
+        background: var(--bg-secondary);
+      }
+
+      /* 뱃지처럼 작은 아이콘은 원래 크기로 유지 */
+      .post-body table img,
+      .post-body img[src*="img.shields"] {
+        display: inline-block;
+        margin: 0;
+        box-shadow: none;
+        border-radius: 0;
+      }
+
+      main {
+        min-height: 70vh;
+        padding: 40px 0;
+      }
+
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 24px 0;
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
     </style>
-</head>
-<body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <a href="/" class="site-title">{{ .Site.Title }}</a>
-                <div class="header-actions">
-                    <input type="text" class="search-input" placeholder="검색..." id="search">
-                    <button class="theme-toggle" id="theme-toggle">
-                        <span class="theme-icon">🌙</span>
-                    </button>
-                </div>
-            </div>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <div class="header-content">
+          <a href="/log" class="site-title">{{ .Site.Title }}</a>
+          <div class="header-actions">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="검색..."
+              id="search"
+            />
+            <button class="theme-toggle" id="theme-toggle">
+              <span class="theme-icon">🌙</span>
+            </button>
+          </div>
         </div>
+      </div>
     </header>
 
     <main>
-        <div class="container">
-            {{ block "main" . }}{{ end }}
-        </div>
+      <div class="container">{{ block "main" . }}{{ end }}</div>
     </main>
 
     <footer>
-        <div class="container">
-            <p>&copy; {{ now.Year }} {{ .Site.Title }} | Built with Hugo</p>
-        </div>
+      <div class="container">
+        <p>&copy; {{ now.Year }} {{ .Site.Title }} | Built with Hugo</p>
+      </div>
     </footer>
 
     <script>
-        // 다크모드 토글
-        const themeToggle = document.getElementById('theme-toggle');
-        const html = document.documentElement;
-        const themeIcon = document.querySelector('.theme-icon');
+      // 다크모드 토글
+      const themeToggle = document.getElementById("theme-toggle");
+      const html = document.documentElement;
+      const themeIcon = document.querySelector(".theme-icon");
 
-        // 저장된 테마 불러오기
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        html.setAttribute('data-theme', savedTheme);
-        themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+      // 저장된 테마 불러오기
+      const savedTheme = localStorage.getItem("theme") || "light";
+      html.setAttribute("data-theme", savedTheme);
+      themeIcon.textContent = savedTheme === "dark" ? "☀️" : "🌙";
 
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      themeToggle.addEventListener("click", () => {
+        const currentTheme = html.getAttribute("data-theme");
+        const newTheme = currentTheme === "light" ? "dark" : "light";
 
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        html.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+        themeIcon.textContent = newTheme === "dark" ? "☀️" : "🌙";
+      });
+
+      // 검색 기능 (간단한 버전)
+      const searchInput = document.getElementById("search");
+      searchInput.addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase();
+        // TODO: 검색 기능 구현
+      });
+
+      const tocLinks = document.querySelectorAll(".article-toc a[href^='#']");
+
+      tocLinks.forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          const href = link.getAttribute("href");
+          if (!href || href === "#") return;
+
+          const targetId = decodeURIComponent(href.slice(1));
+          const targetElement =
+            document.getElementById(targetId) || document.querySelector(href);
+          if (!targetElement) return;
+
+          // Remove the previous hash without affecting browser history
+          const cleanUrl = window.location.href.split("#")[0];
+          history.replaceState(null, "", cleanUrl);
+
+          targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
+
+          // Update hash for deep-linking without pushing new history entry
+          history.replaceState(null, "", href);
         });
-
-        // 검색 기능 (간단한 버전)
-        const searchInput = document.getElementById('search');
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            // TODO: 검색 기능 구현
-        });
+      });
     </script>
-</body>
+  </body>
 </html>

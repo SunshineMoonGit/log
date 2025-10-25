@@ -1,0 +1,11 @@
+{{- $content := .content -}}
+{{- $page := .page -}}
+{{- $site := $page.Site -}}
+{{- range $site.RegularPages -}}
+  {{- $patternRaw := printf "[[%s]]" .Title -}}
+  {{- $patternEscaped := printf "[[%s]]" (htmlEscape .Title) -}}
+  {{- $replacement := printf `<a class="wiki-link" href="%s">%s</a>` .RelPermalink (htmlEscape .LinkTitle) -}}
+  {{- $content = replace $content $patternEscaped $replacement -}}
+  {{- $content = replace $content $patternRaw $replacement -}}
+{{- end -}}
+{{- $content | safeHTML -}}
