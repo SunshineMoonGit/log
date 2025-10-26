@@ -105,6 +105,11 @@
 
   .section-content {
     line-height: 1.7;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 24px;
+    box-shadow: var(--shadow-soft);
   }
 
   .section-content :is(h2, h3, h4) {
@@ -186,10 +191,8 @@
   </div>
 </div>
 
-{{ $sections := .Sections }} {{ $pages := .RegularPages }} {{ $page := . }} {{
-$directPages := where (where $pages "Section" .Section) "Parent" "eq" . }} {{
-$childSectionPages := where $pages "Parent" "ne" . }} {{ if or (gt (len
-$sections) 0) (gt (len $directPages) 0) }}
+{{ $sections := .Sections }} {{ $page := . }} {{ $directPages := where .Pages
+"Kind" "page" }} {{ if gt (len $sections) 0 }}
 <div class="section-grid">
   {{ range $sections }}
   <a class="section-card" href="{{ .RelPermalink }}">
@@ -206,38 +209,12 @@ $sections) 0) (gt (len $directPages) 0) }}
       {{ len .RegularPagesRecursive }}개의 문서
     </div>
   </a>
-  {{ end }} {{ range $directPages }}
-  <a class="section-card" href="{{ .RelPermalink }}">
-    <div class="section-card-icon">📄</div>
-    <div class="section-card-title">{{ .Title }}</div>
-    {{ with .Params.description }}
-    <div class="section-card-desc">{{ . }}</div>
-    {{ else }} {{ with .Summary }}
-    <div class="section-card-desc">{{ . }}</div>
-    {{ end }} {{ end }} {{ with .Date }}
-    <div class="section-card-meta">{{ .Format "2006.01.02" }}</div>
-    {{ end }}
-  </a>
   {{ end }}
 </div>
-{{ end }} {{ with .Content }}
+{{ end }}
+
+{{ with .Content }}
 <article class="section-content">
   {{ partial "wikilinks.html" (dict "page" $page "content" .) }}
 </article>
-{{ end }} {{ if gt (len $childSectionPages) 0 }}
-<div class="section-grid">
-  {{ range $childSectionPages }}
-  <a class="section-card" href="{{ .RelPermalink }}">
-    <div class="section-card-icon">📄</div>
-    <div class="section-card-title">{{ .Title }}</div>
-    {{ with .Params.description }}
-    <div class="section-card-desc">{{ . }}</div>
-    {{ else }} {{ with .Summary }}
-    <div class="section-card-desc">{{ . }}</div>
-    {{ end }} {{ end }} {{ with .Date }}
-    <div class="section-card-meta">{{ .Format "2006.01.02" }}</div>
-    {{ end }}
-  </a>
-  {{ end }}
-</div>
 {{ end }} {{ end }}

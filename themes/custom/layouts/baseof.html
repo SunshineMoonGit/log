@@ -18,32 +18,52 @@
 
     <style>
       :root[data-theme="light"] {
+        --bg-canvas: #f6f7fb;
         --bg-primary: #ffffff;
-        --bg-secondary: #f8f9fa;
-        --text-primary: #1a1a1a;
-        --text-secondary: #666666;
-        --border: #e1e4e8;
-        --accent: #0066cc;
-        --accent-hover: #0052a3;
-        --shadow: rgba(0, 0, 0, 0.1);
+        --bg-secondary: #f1f4f8;
+        --bg-elevated: #ffffff;
+        --bg-header: rgba(255, 255, 255, 0.92);
+        --text-primary: #1f2933;
+        --text-secondary: #5b6875;
+        --text-muted: #8a94a3;
+        --border: #d9e1ec;
+        --border-strong: #c2ccda;
+        --accent: #2563eb;
+        --accent-hover: #1d4ed8;
+        --accent-soft: rgba(37, 99, 235, 0.12);
+        --shadow-soft: 0 16px 40px rgba(15, 23, 42, 0.08);
+      }
+
+      :root[data-theme="dark"] {
+        --bg-canvas: #0f172a;
+        --bg-primary: #111827;
+        --bg-secondary: #1f2937;
+        --bg-elevated: #1a2332;
+        --bg-header: rgba(17, 24, 39, 0.86);
+        --text-primary: #f8fafc;
+        --text-secondary: #cbd5f5;
+        --text-muted: #64748b;
+        --border: #1f2a3a;
+        --border-strong: #334155;
+        --accent: #60a5fa;
+        --accent-hover: #93c5fd;
+        --accent-soft: rgba(147, 197, 253, 0.16);
+        --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.55);
+      }
+
+      html {
+        font-size: 16px;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
       }
 
       html[data-scroll-behavior="smooth"] {
         scroll-behavior: smooth;
       }
 
-      :root[data-theme="dark"] {
-        --bg-primary: #1a1a1a;
-        --bg-secondary: #2d2d2d;
-        --text-primary: #ffffff;
-        --text-secondary: #a0a0a0;
-        --border: #404040;
-        --accent: #3b82f6;
-        --accent-hover: #60a5fa;
-        --shadow: rgba(255, 255, 255, 0.1);
-      }
-
-      * {
+      *,
+      *::before,
+      *::after {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -51,118 +71,162 @@
 
       body {
         font-family: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
-        background: var(--bg-primary);
+        background: var(--bg-canvas);
         color: var(--text-primary);
-        line-height: 1.6;
-        transition: background 0.3s, color 0.3s;
+        line-height: 1.75;
+        font-weight: 400;
+        letter-spacing: -0.01em;
+        transition: background 0.25s ease, color 0.25s ease;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.2s ease, opacity 0.2s ease;
+      }
+
+      a:hover,
+      a:focus-visible {
+        color: var(--accent);
+      }
+
+      ::selection {
+        background: var(--accent-soft);
+        color: var(--accent-hover);
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 14px;
       }
 
       .container {
-        max-width: 1200px;
+        max-width: 1080px;
         margin: 0 auto;
-        padding: 0 20px;
+        padding: 0 28px;
       }
 
       .site-header {
-        padding: 24px 0;
-        border-bottom: 1px solid var(--border);
         position: sticky;
         top: 0;
-        background: var(--bg-primary);
         z-index: 100;
-        backdrop-filter: blur(10px);
+        background: var(--bg-header);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+        box-shadow: none;
+        transition: background 0.25s ease, border 0.25s ease;
       }
 
       .site-header .header-content {
+        min-height: 76px;
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
+        gap: 18px;
       }
 
       .site-header .site-title {
-        font-size: 24px;
+        font-size: 1.4rem;
         font-weight: 700;
         color: var(--text-primary);
-        text-decoration: none;
+        letter-spacing: -0.015em;
       }
 
       .site-header .header-actions {
         display: flex;
-        gap: 16px;
         align-items: center;
-      }
-
-      .site-header .theme-toggle {
-        background: none;
-        border: 1px solid var(--border);
-        padding: 8px 12px;
-        border-radius: 8px;
-        cursor: pointer;
-        color: var(--text-primary);
-        font-size: 18px;
-        transition: all 0.3s;
-      }
-
-      .site-header .theme-toggle:hover {
-        background: var(--bg-secondary);
+        gap: 14px;
       }
 
       .site-header .search-input {
-        padding: 8px 16px;
+        padding: 10px 16px;
+        border-radius: 999px;
         border: 1px solid var(--border);
-        border-radius: 8px;
-        background: var(--bg-secondary);
+        background: var(--bg-primary);
+        min-width: 220px;
+        font-size: 0.95rem;
         color: var(--text-primary);
-        font-size: 14px;
-        width: 200px;
-        transition: width 0.3s;
+        transition: border 0.2s ease, box-shadow 0.2s ease, min-width 0.25s ease;
+      }
+
+      .site-header .search-input::placeholder {
+        color: var(--text-muted);
       }
 
       .site-header .search-input:focus {
         outline: none;
         border-color: var(--accent);
-        width: 300px;
+        box-shadow: 0 0 0 3px var(--accent-soft);
+        min-width: 260px;
       }
 
-      .post {
-        max-width: 800px;
-        margin: 0 auto;
+      .site-header .theme-toggle {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border);
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-size: 0.95rem;
+        padding: 8px 14px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: border 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
       }
 
-      .post-header {
-        margin-bottom: 32px;
-      }
-
-      .post-body img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 16px;
-        display: block;
-        margin: 32px auto;
-        box-shadow: 0 20px 40px var(--shadow);
-        background: var(--bg-secondary);
-      }
-
-      /* 뱃지처럼 작은 아이콘은 원래 크기로 유지 */
-      .post-body table img,
-      .post-body img[src*="img.shields"] {
-        display: inline-block;
-        margin: 0;
-        box-shadow: none;
-        border-radius: 0;
+      .site-header .theme-toggle:hover {
+        border-color: var(--accent);
+        box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+        transform: translateY(-1px);
       }
 
       main {
-        min-height: 70vh;
-        padding: 40px 0;
+        flex: 1;
+        padding: 24px 0 24px;
       }
 
       footer {
         border-top: 1px solid var(--border);
-        padding: 24px 0;
+        background: var(--bg-primary);
+        padding: 32px 0 48px;
         text-align: center;
+        color: var(--text-muted);
+        font-size: 0.875rem;
+      }
+
+      footer a {
         color: var(--text-secondary);
-        font-size: 14px;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 0 20px;
+        }
+
+        .site-header .header-content {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 14px;
+          padding: 18px 0;
+        }
+
+        .site-header .header-actions {
+          justify-content: space-between;
+        }
+
+        .site-header .search-input {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .site-header .search-input:focus {
+          min-width: 0;
+        }
       }
     </style>
   </head>
@@ -187,7 +251,10 @@
     </header>
 
     <main>
+      {{ if or (eq .Kind "page") (eq .Kind "single") }} {{ block "main" . }}{{
+      end }} {{ else }}
       <div class="container">{{ block "main" . }}{{ end }}</div>
+      {{ end }}
     </main>
 
     <footer>
@@ -216,11 +283,104 @@
         themeIcon.textContent = newTheme === "dark" ? "☀️" : "🌙";
       });
 
-      // 검색 기능 (간단한 버전)
+      // 검색 기능
       const searchInput = document.getElementById("search");
+      let searchIndex = null;
+      let searchResults = null;
+
+      // 검색 결과 컨테이너 생성
+      const createSearchResults = () => {
+        if (searchResults) return;
+        searchResults = document.createElement("div");
+        searchResults.className = "search-results";
+        searchResults.style.cssText = `
+          position: absolute;
+          top: calc(100% + 8px);
+          right: 0;
+          width: 420px;
+          max-width: 90vw;
+          max-height: 500px;
+          overflow-y: auto;
+          background: var(--bg-primary);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          box-shadow: var(--shadow-soft);
+          padding: 12px;
+          display: none;
+          z-index: 200;
+        `;
+        searchInput.parentElement.style.position = "relative";
+        searchInput.parentElement.appendChild(searchResults);
+      };
+
+      // 검색 인덱스 로드
+      const loadSearchIndex = async () => {
+        if (searchIndex) return;
+        try {
+          const response = await fetch("/log/index.json");
+          searchIndex = await response.json();
+        } catch (error) {
+          console.error("Failed to load search index:", error);
+        }
+      };
+
+      // 검색 수행
+      const performSearch = (query) => {
+        if (!query || query.length < 2) {
+          searchResults.style.display = "none";
+          return;
+        }
+
+        const results = searchIndex.filter((item) => {
+          const searchText = `${item.title} ${item.summary} ${item.content}`.toLowerCase();
+          return searchText.includes(query.toLowerCase());
+        }).slice(0, 8);
+
+        if (results.length === 0) {
+          searchResults.innerHTML = '<div style="padding: 16px; color: var(--text-secondary); text-align: center;">검색 결과가 없습니다</div>';
+          searchResults.style.display = "block";
+          return;
+        }
+
+        searchResults.innerHTML = results.map((item) => `
+          <a href="${item.permalink}" style="
+            display: block;
+            padding: 12px 14px;
+            border-radius: 12px;
+            margin-bottom: 6px;
+            transition: background 0.2s ease;
+            color: var(--text-primary);
+          " onmouseover="this.style.background='var(--bg-secondary)'" onmouseout="this.style.background='transparent'">
+            <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">${item.title}</div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary); display: flex; gap: 8px; align-items: center;">
+              <span>📅 ${item.date}</span>
+              ${item.section ? `<span>📁 ${item.section}</span>` : ''}
+            </div>
+            ${item.summary ? `<div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${item.summary}</div>` : ''}
+          </a>
+        `).join("");
+        searchResults.style.display = "block";
+      };
+
+      // 검색 입력 이벤트
+      searchInput.addEventListener("focus", () => {
+        createSearchResults();
+        loadSearchIndex();
+      });
+
       searchInput.addEventListener("input", (e) => {
-        const query = e.target.value.toLowerCase();
-        // TODO: 검색 기능 구현
+        if (!searchIndex) {
+          loadSearchIndex().then(() => performSearch(e.target.value));
+        } else {
+          performSearch(e.target.value);
+        }
+      });
+
+      // 외부 클릭시 검색 결과 닫기
+      document.addEventListener("click", (e) => {
+        if (searchResults && !searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+          searchResults.style.display = "none";
+        }
       });
 
       const tocLinks = document.querySelectorAll(".article-toc a[href^='#']");

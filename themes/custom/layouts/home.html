@@ -1,232 +1,353 @@
 {{ define "main" }}
 <style>
-  /* Hero Section */
-  .hero {
-    text-align: center;
-    padding: 60px 0;
-    margin-bottom: 60px;
+  .home-hero {
+    background: linear-gradient(
+      145deg,
+      var(--bg-primary) 0%,
+      rgba(37, 99, 235, 0.06) 100%
+    );
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 56px clamp(24px, 6vw, 72px);
+    margin-bottom: 72px;
+    box-shadow: var(--shadow-soft);
+    display: grid;
+    gap: 48px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    align-items: end;
   }
 
-  .hero h1 {
-    font-size: 48px;
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    font-size: clamp(2.6rem, 4vw, 3.3rem);
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.04em;
+    margin-top: 18px;
+  }
+
+  .hero-description {
+    margin-top: 18px;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    max-width: 42ch;
+    line-height: 1.7;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .hero-stat {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: inset 0 -6px 12px rgba(15, 23, 42, 0.04);
+  }
+
+  .hero-stat-value {
+    font-size: 1.8rem;
     font-weight: 700;
-    margin-bottom: 16px;
+    letter-spacing: -0.035em;
   }
 
-  .hero p {
-    font-size: 20px;
+  .hero-stat-label {
+    font-size: 0.95rem;
     color: var(--text-secondary);
   }
 
-  /* Section */
   .section {
-    margin-bottom: 80px;
+    margin-bottom: 72px;
   }
 
   .section-header {
     display: flex;
+    align-items: flex-end;
     justify-content: space-between;
-    align-items: center;
+    gap: 24px;
     margin-bottom: 32px;
   }
 
   .section-title {
-    font-size: 32px;
+    font-size: 2rem;
     font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .section-subtitle {
+    margin-top: 12px;
+    color: var(--text-secondary);
+    font-size: 1rem;
   }
 
   .section-link {
+    font-size: 0.95rem;
     color: var(--accent);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
 
-  .section-link:hover {
-    color: var(--accent-hover);
+  .section-link::after {
+    content: "→";
+    font-size: 0.95em;
+    transition: transform 0.2s ease;
   }
 
-  /* Category Grid */
+  .section-link:hover::after {
+    transform: translateX(3px);
+  }
+
+  .post-list {
+    display: grid;
+    gap: 24px;
+  }
+
+  .post-card {
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: var(--bg-primary);
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: border 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .post-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .post-card-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+  }
+
+  .post-card-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .post-card-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .post-card-snippet {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 68ch;
+  }
+
+  .project-grid {
+    display: grid;
+    gap: 28px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .project-card {
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+  }
+
+  .project-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .project-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: linear-gradient(
+      135deg,
+      rgba(37, 99, 235, 0.22),
+      rgba(99, 102, 241, 0.18)
+    );
+
+    border-radius: 0;
+  }
+
+  .project-content {
+    padding: 24px 26px 28px;
+    display: grid;
+    gap: 12px;
+  }
+
+  .project-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  .project-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
   .category-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 
   .category-card {
     display: flex;
     align-items: center;
-    justify-content: left;
-    text-align: center;
-    gap: 12px;
-    padding: 12px;
+    gap: 16px;
+    padding: 18px 22px;
     border: 1px solid var(--border);
-    border-radius: 16px;
-    background: var(--bg-secondary);
-    text-decoration: none;
-    color: var(--text-primary);
-    transition: all 0.3s;
-    cursor: pointer;
-    /* min-height: 160px; */
+    border-radius: 20px;
+    background: var(--bg-primary);
+    transition: border 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
 
   .category-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px var(--shadow);
     border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-soft);
   }
 
   .category-icon {
-    font-size: 30px;
-    line-height: 1;
-    display: flex;
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    background: var(--bg-secondary);
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 56px;
-    height: 56px;
+    font-size: 1.6rem;
   }
 
   .category-icon img {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
   }
 
   .category-body {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    align-items: center;
+    gap: 6px;
   }
 
   .category-name {
-    font-size: 18px;
+    font-size: 1.1rem;
     font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
   }
 
   .category-count {
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 0.95rem;
   }
 
-  /* Project Cards */
-  .project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 32px;
+  @media (max-width: 768px) {
+    .home-hero {
+      padding: 40px 24px;
+      margin-bottom: 56px;
+    }
+
+    .hero-description {
+      max-width: 100%;
+      font-size: 1.05rem;
+    }
+
+    .section {
+      margin-bottom: 56px;
+    }
+
+    .post-card {
+      padding: 22px;
+    }
   }
 
-  .project-card {
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    background: var(--bg-secondary);
-    text-decoration: none;
-    color: var(--text-primary);
-    transition: all 0.3s;
-  }
+  @media (max-width: 480px) {
+    .hero-title {
+      font-size: 2.2rem;
+    }
 
-  .project-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px var(--shadow);
-  }
+    .hero-stats {
+      grid-template-columns: 1fr;
+    }
 
-  .project-image {
-    display: block;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-    background-size: cover;
-    background-position: center;
-  }
-
-  .project-content {
-    padding: 24px;
-  }
-
-  .project-title {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-
-  .project-subtitle {
-    color: var(--text-secondary);
-    font-size: 14px;
-    margin-bottom: 16px;
-  }
-
-  .project-desc {
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 16px;
-  }
-
-  .project-meta {
-    font-size: 13px;
-    color: var(--text-secondary);
-  }
-
-  /* Recent Posts */
-  .post-list {
-    display: grid;
-    gap: 24px;
-  }
-
-  .post-item {
-    padding: 24px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--bg-secondary);
-    text-decoration: none;
-    color: var(--text-primary);
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 16px;
-    align-items: center;
-    transition: all 0.3s;
-  }
-
-  .post-item:hover {
-    border-color: var(--accent);
-    transform: translateX(4px);
-  }
-
-  .post-info h3 {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-
-  .post-meta {
-    display: flex;
-    gap: 16px;
-    font-size: 14px;
-    color: var(--text-secondary);
-  }
-
-  .post-date {
-    color: var(--text-secondary);
-    font-size: 14px;
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 </style>
 
-<!-- Hero -->
-<div class="hero">
-  <h1>{{ .Site.Title }}</h1>
-  <p>{{ .Site.Params.description }}</p>
-</div>
+{{ $allPages := where .Site.RegularPages "Params.draft" "ne" true }} {{ $posts
+:= where $allPages "Section" "ne" "project" }} {{ $sections := where
+.Site.Sections "Section" "ne" "project" }}
 
-<!-- Projects Section -->
-{{ with .Site.GetPage "project" }}
+<section class="home-hero">
+  <div>
+    <span class="hero-eyebrow">Learning in public</span>
+    <h1 class="hero-title">{{ .Site.Title }}</h1>
+    <p class="hero-description">{{ .Site.Params.description }}</p>
+  </div>
+  <ul class="hero-stats">
+    <li class="hero-stat">
+      <span class="hero-stat-value">{{ len $posts }}</span>
+      <span class="hero-stat-label">작성한 글</span>
+    </li>
+    {{ with .Site.GetPage "project" }}
+    <li class="hero-stat">
+      <span class="hero-stat-value">{{ len .Pages }}</span>
+      <span class="hero-stat-label">프로젝트</span>
+    </li>
+    {{ end }}
+    <li class="hero-stat">
+      <span class="hero-stat-value">{{ len $sections }}</span>
+      <span class="hero-stat-label">카테고리</span>
+    </li>
+  </ul>
+</section>
+
+{{ with .Site.GetPage "project" }} {{ if gt (len .Pages) 0 }}
 <section class="section">
   <div class="section-header">
-    <h2 class="section-title">프로젝트</h2>
+    <div>
+      <h2 class="section-title">프로젝트</h2>
+    </div>
   </div>
   <div class="project-grid">
     {{ range (sort .Pages "Params.period" "desc") }}
@@ -234,7 +355,7 @@
       {{ with .Params.image }}
       <img src="{{ . }}" alt="{{ $.Title }}" class="project-image" />
       {{ else }}
-      <div class="project-image"></div>
+      <div class="project-image" aria-hidden="true"></div>
       {{ end }}
       <div class="project-content">
         <h3 class="project-title">{{ .Title }}</h3>
@@ -246,27 +367,26 @@
     {{ end }}
   </div>
 </section>
-{{ end }}
-
-<!-- Categories Section -->
+{{ end }} {{ end }} {{ if gt (len $sections) 0 }}
 <section class="section">
   <div class="section-header">
-    <h2 class="section-title">카테고리</h2>
+    <div>
+      <h2 class="section-title">카테고리</h2>
+    </div>
   </div>
   <div class="category-grid">
-    {{ range .Site.Sections }} {{ if ne .Section "project" }}
+    {{ range $sections }}
     <a href="{{ .RelPermalink }}" class="category-card">
-      <div class="category-icon">
+      <span class="category-icon">
         {{ if .Params.icon }} {{ if hasPrefix .Params.icon "http" }}
         <img src="{{ .Params.icon }}" alt="{{ .Title }}" />
         {{ else }} {{ .Params.icon }} {{ end }} {{ else }} 📁 {{ end }}
-      </div>
-      <div class="category-body">
-        <div class="category-name">{{ .Title }}</div>
-      </div>
+      </span>
+      <span class="category-body">
+        <span class="category-name">{{ .Title }}</span>
+      </span>
     </a>
-    {{ end }} {{ end }}
+    {{ end }}
   </div>
 </section>
-
-{{ end }}
+{{ end }} {{ end }}

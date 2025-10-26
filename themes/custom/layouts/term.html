@@ -1,7 +1,117 @@
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
-  {{ .Content }}
-  {{ range .Pages }}
-    <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+<style>
+  .term-header {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 40px clamp(24px, 5vw, 48px);
+    margin-bottom: 48px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .term-title {
+    font-size: clamp(2.2rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+
+  .term-count {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+  }
+
+  .post-list {
+    display: grid;
+    gap: 24px;
+  }
+
+  .post-card {
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: var(--bg-primary);
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: border 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .post-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .post-card-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+  }
+
+  .post-card-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .post-card-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .post-card-snippet {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 68ch;
+  }
+
+  @media (max-width: 768px) {
+    .term-header {
+      padding: 32px 24px;
+      margin-bottom: 36px;
+    }
+
+    .post-card {
+      padding: 22px;
+    }
+  }
+</style>
+
+<header class="term-header">
+  <h1 class="term-title">{{ .Title }}</h1>
+  <p class="term-count">{{ len .Pages }}개의 글</p>
+</header>
+
+{{ if .Content }}
+  <div class="term-content">
+    {{ .Content }}
+  </div>
+{{ end }}
+
+<div class="post-list">
+  {{ range .Pages.ByDate.Reverse }}
+  <a href="{{ .RelPermalink }}" class="post-card">
+    <div class="post-card-meta">
+      <span>📅 {{ .Date.Format "2006.01.02" }}</span>
+      {{ with .CurrentSection }}
+      <span>📁 {{ .Title }}</span>
+      {{ end }}
+      {{ if gt .ReadingTime 0 }}
+      <span>⏱ {{ .ReadingTime }}분</span>
+      {{ end }}
+    </div>
+    <h2 class="post-card-title">{{ .Title }}</h2>
+    {{ with or .Params.description (plainify .Summary) }}
+    <p class="post-card-snippet">{{ . | truncate 150 }}</p>
+    {{ end }}
+  </a>
   {{ end }}
+</div>
 {{ end }}
